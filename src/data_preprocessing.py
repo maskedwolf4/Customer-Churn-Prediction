@@ -54,15 +54,20 @@ class DataProcessing:
                 'Card_Category'
             ], drop_first=True)
 
-            self.data = self.data.drop(['Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1',
-            'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2',
-            'CLIENTNUM'],axis='columns', inplace=True)
-
             logger.info("Data Preprocessing done...")
 
         except Exception as e:
             logger.error(f"Error while preprocessing data {e}")
             raise CustomException(str(e))
+        
+    def drop_cols(self):
+        try:
+            self.data = self.data.drop(['Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1',
+                'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2',
+                'CLIENTNUM'],axis='columns', inplace=True)
+        except Exception as e:
+            logger.error(f"Error while Dropping columns")
+
     
     def scale_data(self):
         try:
@@ -83,7 +88,7 @@ class DataProcessing:
         try:
             batch_data = {}
             for idx,row in self.data.iterrows():
-                entity_id = row["PassengerId"]
+                entity_id = row["CLIENTNUM"]
                 features = {
                     "Attrition_Flag" : row['Attrition_Flag'],
                     "Contacts_Count_12_mon" : row["Contacts_Count_12_mon"],
@@ -137,7 +142,8 @@ class DataProcessing:
             logger.info("Starting our Data Processing Pipleine...")
             self.load_data()
             self.preprocess_data()
-            self.handle_imbalance_data()
+            self.drop_cols()
+            self.scale_data()
             self.store_feature_in_redis()
 
             logger.info("End of pipeline Data Processing...")
