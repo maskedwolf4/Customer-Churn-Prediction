@@ -1,0 +1,222 @@
+:root {
+    --primary-color: #2563eb;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --dark-color: #1f2937;
+    --light-bg: #f3f4f6;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-bottom: 50px;
+}
+
+.header-banner {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 15px;
+    margin: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.header-banner h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.header-banner p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.card {
+    border-radius: 15px;
+    border: none;
+    background: white;
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.section-title i {
+    margin-right: 10px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.result-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-header {
+    padding: 25px;
+    color: white;
+    text-align: center;
+}
+
+.result-header.success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.result-header.danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.result-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.result-body {
+    padding: 30px;
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--light-bg);
+    margin-bottom: 15px;
+    transition: transform 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+}
+
+.metric-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-right: 20px;
+}
+
+.metric-icon.attrition {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: var(--danger-color);
+}
+
+.metric-icon.retention {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: var(--success-color);
+}
+
+.metric-details h5 {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.metric-details h2 {
+    margin: 5px 0 0 0;
+    color: var(--dark-color);
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.risk-badge {
+    text-align: center;
+}
+
+.risk-badge .badge {
+    font-size: 1.2rem;
+    padding: 10px 25px;
+    border-radius: 25px;
+}
+
+.recommendation {
+    margin-top: 20px;
+}
+
+.recommendation .alert {
+    border-radius: 12px;
+    border: none;
+}
+
+.recommendation ul {
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+.recommendation li {
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .header-banner h1 {
+        font-size: 1.8rem;
+    }
+    
+    .metric-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .metric-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
