@@ -213,3 +213,7 @@ include/
 
 tests/dags/
 plugins/
+
+artifacts/raw/
+artifacts/processed/
+artifacts/model/

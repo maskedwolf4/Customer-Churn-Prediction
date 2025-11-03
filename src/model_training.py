@@ -8,6 +8,8 @@ import os
 import pickle
 from config.path_config import *
 from sklearn.metrics import accuracy_score
+import mlflow
+import mlflow.sklearn
 
 logger = get_logger(__name__)
 
@@ -106,6 +108,7 @@ class ModelTraining:
             accuracy = accuracy_score(y_test, y_pred)
 
             self.save_model(best_model)
+            mlflow.log_params(best_model.get_params())
 
             return accuracy
         
@@ -115,24 +118,31 @@ class ModelTraining:
     
     def save_model(self , model):
         try:
-            model_filename = f"{self.model_save_path}lgb_model.pkl"
+            with mlflow.start_run():
+                model_filename = f"{self.model_save_path}lgb_model.pkl"
 
-            with open(model_filename,'wb') as model_file:
-                pickle.dump(model , model_file)
+                with open(model_filename,'wb') as model_file:
+                    pickle.dump(model , model_file)
 
-            logger.info(f"Model saved at {model_filename}")
+                logger.info(f"Model saved at {model_filename}")
+                mlflow.log_artifact(self.model_output_path)
         except Exception as e:
             logger.error(f"Error while model saving {e}")
             raise CustomException(str(e))
         
     def run(self):
         try:
-            logger.info("Starting Model Training Pipleine....")
-            X_train , X_test , y_train, y_test = self.prepare_data()
-            accuracy = self.train_and_evaluate(X_train , y_train, X_test , y_test)
-            logger.info(f"Accuracy = {accuracy}")
+            with mlflow.start_run():
+                logger.info("Starting Model Training Pipleine....")
+                logger.info("Starting our MLFLOW experimentation")
+                X_train , X_test , y_train, y_test = self.prepare_data()
 
-            logger.info("End of Model Training pipeline...")
+                accuracy = self.train_and_evaluate(X_train , y_train, X_test , y_test)
+                logger.info(f"Accuracy = {accuracy}")
+                mlflow.log_metric(accuracy)
+                mlflow.log_artifact(self.model_save_path, artifact_path="model")
+
+                logger.info("End of Model Training pipeline...")
 
         except Exception as e:
             logger.error(f"Error while model training pipeline {e}")
