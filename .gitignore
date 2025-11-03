@@ -208,3 +208,8 @@ __marimo__/
 
 # Logs
 logs/
+
+include/
+
+tests/dags/
+plugins/

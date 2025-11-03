@@ -131,6 +131,7 @@ class DataProcessing:
             logger.error(f"Error while feature storing data {e}")
             raise CustomException(str(e))
         
+    # Optional
     def retrive_feature_redis_store(self,entity_id):
         features = self.feature_store.get_features(entity_id)
         if features:
@@ -158,7 +159,6 @@ if __name__=="__main__":
     data_processor = DataProcessing(TRAIN_PATH,TEST_PATH,feature_store)
     data_processor.run()
 
-    print(data_processor.retrive_feature_redis_store(entity_id=332))
-        
+
 
 

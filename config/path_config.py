@@ -8,3 +8,5 @@ TEST_PATH = os.path.join(RAW_DIR,'test_data.csv')
 
 
 PROCESSED_DIR = "artifacts/processed"
+
+MODEL_PATH = "artifacts/models/"
