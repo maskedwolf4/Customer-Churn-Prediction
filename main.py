@@ -4,8 +4,18 @@ import numpy as np
 import pandas as pd
 import dvc.api
 import os
+from src.logger import get_logger
+from src.feature_store import RedisFeatureStore
+from sklearn.preprocessing import StandardScaler
+from alibi_detect.cd import KSDrift
+from collections import Counter
+
+logger = get_logger(__name__)
 
 app = Flask(__name__)
+
+prediction_count = Counter('prediction_count' , " Number of prediction count" )
+drift_count = Counter('drift_count' , "Numer of times data drift is detected")
 
 # Global variable to store the model
 model = None
@@ -45,6 +55,22 @@ FEATURE_COLUMNS = [
     "Total_Ct_Chng_Q4_Q1",
     "Total_Trans_Ct"
 ]
+
+feature_store = RedisFeatureStore()
+scaler = StandardScaler()
+
+def fit_scaler_on_ref_data():
+    entity_ids = feature_store.get_all_entity_ids()
+    all_features = feature_store.get_batch_features(entity_ids)
+
+    all_features_df = pd.DataFrame.from_dict(all_features , orient='index')[FEATURE_COLUMNS]
+
+    scaler.fit(all_features_df)
+    return scaler.transform(all_features_df)
+
+
+historical_data = fit_scaler_on_ref_data()
+ksd = KSDrift(x_ref=historical_data , p_val=0.05)
 
 def load_model_from_dvc():
     """Load model from DVC S3 storage"""
@@ -161,9 +187,25 @@ def predict():
         
         # Create DataFrame with features in correct order
         input_df = pd.DataFrame([features_dict], columns=FEATURE_COLUMNS)
+
+        ##### Data Drift Detection
+        features_scaled = scaler.transform(input_df)
+
+        drift = ksd.predict(features_scaled)
+        print("Drift Response : ",drift)
+
+        drift_response = drift.get('data',{})
+        is_drift = drift_response.get('is_drift' , None)
+
+        if is_drift is not None and is_drift==1:
+            print("Drift Detected....")
+            logger.info("Drift Detected....")
+
+            drift_count.inc()
         
         # Make prediction
         prediction = model.predict(input_df)[0]
+        prediction_count.inc()
         probability = model.predict_proba(input_df)[0]
         
         # Format response
