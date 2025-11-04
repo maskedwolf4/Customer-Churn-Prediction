@@ -8,7 +8,7 @@ from src.logger import get_logger
 from src.feature_store import RedisFeatureStore
 from sklearn.preprocessing import StandardScaler
 from alibi_detect.cd import KSDrift
-from collections import Counter
+from prometheus_client import start_http_server, Counter, Gauge
 
 logger = get_logger(__name__)
 
@@ -231,7 +231,15 @@ def health():
         'features_count': len(FEATURE_COLUMNS)
     })
 
+@app.route('/metrics')
+def metrics():
+    from prometheus_client import generate_latest
+    from flask import Response
+
+    return Response(generate_latest() , content_type='text/plain')
+
 if __name__ == '__main__':
+    start_http_server()
     # Load model before starting the server
     load_model_from_dvc()
     app.run(debug=True, host='0.0.0.0', port=5000)
