@@ -15,7 +15,7 @@ The solution predicts whether a customer will churn based on their transaction p
 
 ## Technical Architecture
 
-![MLOps Architecture for Customer Churn Prediction System]()
+![MLOps Architecture for Customer Churn Prediction System](https://github.com/maskedwolf4/Customer-Churn-Prediction/blob/main/assests/mlops_architecture_final.svg)
 
 MLOps Architecture for Customer Churn Prediction System
 
@@ -303,5 +303,10 @@ docker run -p 5000:5000 churn-prediction
 - Infrastructure scaling adjustments
 
 This MLOps pipeline provides a robust foundation for production machine learning systems, combining best practices in data engineering, model development, and operational excellence to deliver reliable customer churn predictions at scale.
+
+## **Frontend Part of Application**
+
+![Frontend](https://github.com/maskedwolf4/Customer-Churn-Prediction/blob/main/assests/image.png)
+
 
 
