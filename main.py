@@ -8,7 +8,7 @@ from src.logger import get_logger
 from src.feature_store import RedisFeatureStore
 from sklearn.preprocessing import StandardScaler
 from alibi_detect.cd import KSDrift
-from prometheus_client import start_http_server, Counter, Gauge
+from prometheus_client import start_http_server, Counter
 
 logger = get_logger(__name__)
 
